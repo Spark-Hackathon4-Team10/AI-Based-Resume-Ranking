@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card } from "@/components/ui/card";
@@ -15,19 +16,14 @@ export const FileUpload = ({ files, onFilesChange, disabled }: FileUploadProps) 
   const [dragActive, setDragActive] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const validFiles = acceptedFiles.filter(file => 
-      file.type === 'application/zip' ||
-      file.type === 'application/x-zip-compressed' ||
-      file.name.toLowerCase().endsWith('.zip')
-    );
-    onFilesChange([...files, ...validFiles]);
+    const pdfFiles = acceptedFiles.filter(file => file.type === 'application/pdf');
+    onFilesChange([...files, ...pdfFiles]);
   }, [files, onFilesChange]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'application/zip': ['.zip'],
-      'application/x-zip-compressed': ['.zip']
+      'application/pdf': ['.pdf']
     },
     disabled,
     onDragEnter: () => setDragActive(true),
@@ -62,7 +58,7 @@ export const FileUpload = ({ files, onFilesChange, disabled }: FileUploadProps) 
               <p className="text-lg font-medium text-slate-700 mb-2">
                    Upload files here              </p>
               <p className="text-sm text-slate-500">
-                PDF or ZIP files only (max 5MB each)
+                PDF files only (max 5MB each)
               </p>
             </div>
           </div>
