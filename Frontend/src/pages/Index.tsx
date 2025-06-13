@@ -47,16 +47,8 @@ const Index = () => {
     try {
       const formData = new FormData();
       formData.append("jobDescription", jobDescription);
-      
-      // Handle both PDF and ZIP files
       uploadedFiles.forEach((file) => {
-        // For ZIP files, we'll send them with a specific field name
-        if (file.type === 'application/zip') {
-          formData.append("zipFile", file);
-        } else {
-          // For PDF files, keep the original field name
-          formData.append("files", file);
-        }
+        formData.append("files", file);
       });
 
       const response = await fetch("http://localhost:8000/analyze", {
@@ -69,6 +61,7 @@ const Index = () => {
       }
 
       const results = await response.json();
+
       localStorage.setItem("analysisResults", JSON.stringify(results));
       localStorage.setItem("jobDescription", jobDescription);
 
